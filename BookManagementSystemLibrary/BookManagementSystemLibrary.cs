@@ -57,8 +57,15 @@ namespace BookManagementSystemLibrary
 		}
 	}
 
+
 	public class BookService : IEnumerable<Book>
 	{
+		public delegate IEnumerable<Book> SearchDelegate(string query);
+
+		public SearchDelegate SearchByAuthor;
+		public SearchDelegate SearchByGenre;
+		public SearchDelegate SearchByRating;
+
 		private readonly List<Book> _books;
 
 
@@ -88,8 +95,31 @@ namespace BookManagementSystemLibrary
 		public BookService()
 		{
 			_books = new List<Book>();
-		}
 
+			SearchByAuthor = query =>
+			{
+				int authorId;
+				bool success = Int32.TryParse(query, out authorId);
+				if (success)
+				{
+					return _books.Where(b => b.Author.Id == authorId);
+				}
+				return new List<Book>();
+			};
+
+			SearchByGenre = query => _books.Where(b => b.Genre == query);
+
+			SearchByRating = query =>
+			{
+				int rating;
+				bool success = Int32.TryParse(query, out rating);
+				if (success)
+				{
+					return _books.Where(b => b.Reviews.Average(r => r.Rating) >= rating);
+				}
+				return new List<Book>();
+			};
+		}
 		public void AddBook(int bookId, string description, string genre, string title, Author? author, int? authorID)
 		{
 			if ((author == null && authorID == null) ||
@@ -242,5 +272,7 @@ namespace BookManagementSystemLibrary
 		{
 			return _books.Contains(book);
 		}
+
+
 	}
 }
