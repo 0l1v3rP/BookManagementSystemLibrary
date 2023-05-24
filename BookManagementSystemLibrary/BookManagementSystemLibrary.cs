@@ -72,6 +72,13 @@ namespace BookManagementSystemLibrary
 		public int BookCount => _books.Count;
 
 		public int AuthorCount => _books.Select(b => b.Author).Distinct().Count();
+		public string[] this[int id]
+		{
+			get
+			{
+				return _books.Where(b => b.Id == id).Select(b => b.Title).ToArray();
+			}
+		}
 
 		public string[] this[Author author]
 		{

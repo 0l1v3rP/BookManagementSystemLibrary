@@ -1,6 +1,7 @@
 ﻿
 using BookManagementSystemLibrary;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BookManagementSystemLibrary.ViewerConsoleApp
 {
@@ -15,7 +16,17 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 
 			do
 			{
-				Console.WriteLine("Enter a command: ");
+				Console.WriteLine("Enter a command: \n");
+				Console.WriteLine("\tadd book");
+				Console.WriteLine("\tremove book");
+				Console.WriteLine("\tupdate book");
+				Console.WriteLine("\tlists book");
+				Console.WriteLine("\tlist authors");
+				Console.WriteLine("\tshow statistics");
+				Console.WriteLine("\tsearch by");
+				Console.WriteLine("\tedit");
+				Console.WriteLine("\treviews");
+
 				command = Console.ReadLine();
 
 				switch (command)
@@ -71,9 +82,10 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			string title = Console.ReadLine();
 
 			Console.Write("Enter author ID: ");
-			int authorID = int.Parse(Console.ReadLine());
+			Author? author = configureAuthor();
 
-			bookService.AddBook(id, description, genre, title, null, authorID);
+
+			bookService.AddBook(id, description, genre, title, author, null);
 		}
 
 		static void RemoveBook()
@@ -169,8 +181,84 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 
 		static void Edit()
 		{
+			Console.WriteLine("Enter book ID to edit: ");
+			int id = int.Parse(Console.ReadLine());
 
-		
+			Console.WriteLine($"You chose to edit {bookService[id]}");
+
+			var book = bookService.SearchBook(id);
+			if (book != null)
+			{
+				Console.WriteLine("What would you like to edit?");
+				Console.WriteLine("1 - Title");
+				Console.WriteLine("2 - Description");
+				Console.WriteLine("3 - Genre");
+				Console.WriteLine("4 - Author");
+
+				int choice = int.Parse(Console.ReadLine());
+				switch (choice)
+				{
+					case 4:
+						book.Author = configureAuthor();
+						break;
+					default:
+						Console.WriteLine("Invalid choice.");
+						break;
+				}
+				bookService.UpdateBook(book);
+			}
+			else
+			{
+				Console.WriteLine("No book found with that ID.");
+			}
+		}
+
+		private static Author? configureAuthor()
+		{
+			Console.WriteLine("Enter 'n' to create a new author, or 'e' to use an existing author: ");
+			char authorChoice = char.Parse(Console.ReadLine());
+			Author author = null;
+			if (authorChoice == 'n')
+			{
+				while (true)
+				{
+					Console.WriteLine("Enter a unique Id for the author: ");
+					if (int.TryParse(Console.ReadLine(), out int authorId))
+					{
+						if (!bookService.GetAuthors().Any(author => author.Id == authorId))
+						{
+							Console.WriteLine("Enter author name: ");
+							string name = Console.ReadLine();
+							author = new Author(authorId, name);
+							break;
+						}
+						else
+						{
+							Console.WriteLine("This Id is already in use. Please enter a unique Id.");
+						}
+					}
+					else
+					{
+						Console.WriteLine("Invalid input. Please enter a valid number for the author Id.");
+					}
+				}
+
+			}
+			else if (authorChoice == 'e')
+			{
+				while (author == null)
+				{
+					Console.WriteLine("Enter author ID: ");
+					int authorId = int.Parse(Console.ReadLine());
+					author = bookService.GetAuthors().FirstOrDefault(a => a.Id == authorId);
+					if (author == null)
+					{
+						Console.WriteLine("Incorrect id");
+					}
+				}
+				
+			}
+			return author;
 		}
 
 		static void Reviews()
