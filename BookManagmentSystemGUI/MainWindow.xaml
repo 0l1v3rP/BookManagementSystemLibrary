@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:BookManagmentSystemGUI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="New" Click="New_Click"/>
+                <MenuItem Header="Open" Click="Open_Click"/>
+                <MenuItem Header="Save As" Click="Save_As_Click"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+        <local:BookManagmentUserControl x:Name="BookManagmentUserControl"/>
 
-    </Grid>
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" RenderTransformOrigin="0.499,0.528" Height="417">
+        </Grid>
+    </DockPanel>
 </Window>
