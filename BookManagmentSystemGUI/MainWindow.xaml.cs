@@ -50,10 +50,5 @@ namespace BookManagmentSystemGUI
 		{
 
 		}
-
-		private void BookManagmentUserControl_Loaded()
-		{
-
-		}
 	}
 }

@@ -24,5 +24,10 @@ namespace BookManagmentSystemGUI
 		{
 			InitializeComponent();
 		}
+
+		private void Details_Button_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
