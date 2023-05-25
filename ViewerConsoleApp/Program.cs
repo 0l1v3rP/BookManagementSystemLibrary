@@ -8,6 +8,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 {
 	class Program
 	{
+		// An instance of BookService that performs operations on books.
 		static BookService bookService = new BookService();
 		static void Main(string[] args)
 		{
@@ -71,6 +72,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 
 		}
 
+		// Add a book to the collection. The user will be prompted to enter details of the book.
 		static void AddBook()
 		{
 			try
@@ -128,6 +130,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			}
 		}
 
+		// Remove a book from the collection. The user will be prompted to enter the ID of the book.
 
 		static void RemoveBook()
 		{
@@ -142,6 +145,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			}
 		}
 
+		// Update a book's details. The user will be prompted to enter the ID of the book and the new title.
 
 		static void UpdateBook()
 		{
@@ -160,6 +164,8 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			
 		}
 
+		// List all the books in the collection.
+
 		static void ListBooks()
 		{
 			foreach (var book in bookService)
@@ -168,6 +174,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			}
 		}
 
+		// List all the authors.
 		static void ListAuthors()
 		{
 			foreach (var author in bookService.GetAuthors())
@@ -176,6 +183,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			}
 		}
 
+		// Show some statistics about the books in the collection.
 
 		static void ShowStatistics()
 		{
@@ -195,6 +203,8 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			Console.WriteLine($"Average number of books per author: {averageBooksPerAuthor}");
 			Console.WriteLine($"Average number of books per genre: {averageBooksPerGenre}");
 		}
+
+		// Search for books by author, genre or rating. The user will be prompted to enter the search criteria.
 
 		static void SearchBy()
 		{
@@ -229,6 +239,8 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 					break;
 			}
 		}
+
+		// Edit the details of a book. The user will be prompted to enter the ID of the book and the new details.
 
 		static void Edit()
 		{
@@ -271,6 +283,8 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 				Console.WriteLine("No book found with that ID.");
 			}
 		}
+
+		// Configure the author for a book. The user can choose to create a new author or use an existing one.
 
 		private static Author? configureAuthor()
 		{
@@ -348,6 +362,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			}
 		}
 
+		// Manage reviews for a book. The user can choose to see existing reviews or add a new one.
 
 		static void Reviews()
 		{

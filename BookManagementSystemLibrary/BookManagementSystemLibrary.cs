@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace BookManagementSystemLibrary
 {
@@ -131,6 +133,8 @@ namespace BookManagementSystemLibrary
 
 		public int AuthorCount => _books.Select(b => b.Author).Distinct().Count();
 
+
+
 		/// <summary>
 		/// returns a title of the book by id
 		/// </summary>
@@ -253,6 +257,7 @@ namespace BookManagementSystemLibrary
 			_books.Add(new Book(bookId, description, genre, title, bookAuthor));
 		}
 
+	
 		/// <summary>
 		/// tries to add a book to a list of books, if there's already a book with the same id
 		/// then the function will retunr false otherwise true, 
@@ -260,7 +265,7 @@ namespace BookManagementSystemLibrary
 		/// </summary>
 		/// <param name="book"></param>
 		/// <returns></returns>
-		public void TryAddBook(Book book)
+		public void AddBook(Book book)
 		{
 			checkIfValid(book);
 			if (_books.Any(b => b.Id == book.Id))
@@ -304,7 +309,7 @@ namespace BookManagementSystemLibrary
 
 		}
 
-		private static void checkIfValid(Book book)
+		private void checkIfValid(Book book)
 		{
 			if (string.IsNullOrEmpty(book.Title))
 			{
@@ -321,6 +326,10 @@ namespace BookManagementSystemLibrary
 			if (book.Author == null)
 			{
 				throw new ArgumentException("Book author cannot be null.");
+			}
+			if (!AllowedGenres(book.Genre))
+			{
+				throw new ArgumentException("Wrong genre");
 			}
 		}
 
@@ -349,21 +358,24 @@ namespace BookManagementSystemLibrary
 		}
 
 		/// <summary>
-		/// adds a review for a given book that is referenced by id, if the book doesn't exists then the function will return false else true
+		/// adds a review for a given book that is referenced by id, if the book doesn't exists
+		/// or the review with the given id already exists, then the function will return false else true
 		/// </summary>
 		/// <param name="review"></param>
-		/// <param name="id"></param>
+		/// <param name="id">book id</param>
 		/// <returns></returns>
 		public bool AddReview(Review review, int id)
 		{
-
-			var existingBook = _books.FirstOrDefault(b => b.Id == id);
-			if (existingBook != null && existingBook.Reviews.Where(r => r.Id == review.Id) == null)
+			Book existingBook = _books.FirstOrDefault(b => b.Id == id);
+			if (existingBook != null && existingBook.Reviews.All(r => r.Id != review.Id))
 			{
 				existingBook.AddReview(review);
+				return true;
 			}
-			return existingBook != null;
+			return false;
 		}
+
+
 
 		/// <summary>
 		/// searches book by id, if the id is not in book list then the ArgumentException("Invalid id") will be thrown,
@@ -512,7 +524,7 @@ namespace BookManagementSystemLibrary
 						book = new Book(bookId, bookDescription, bookGenre, bookTitle, author);
 						try
 						{
-							TryAddBook(book);
+							AddBook(book);
 						}
 						catch 
 						{
@@ -534,7 +546,16 @@ namespace BookManagementSystemLibrary
 		}
 
 
-
+		/// <summary>
+		/// returns number of reviews from a book
+		/// </summary>
+		/// <param name="bookID"></param>
+		/// <returns></returns>
+		public int ReviewCount(int bookID)
+		{
+			Book? book = _books.FirstOrDefault(b => b.Id == bookID);
+			return book?.Reviews.Count ?? 0;
+		}
 
 		/// <summary>
 		/// if author with give id already exists then return that author, else return new author
@@ -570,5 +591,25 @@ namespace BookManagementSystemLibrary
 			File.WriteAllLines(csvFile.FullName, lines);
 		}
 
+		/// <summary>
+		/// return true if genre is valid, otherwise false
+		/// </summary>
+		/// <param name="genre"></param>
+		/// <returns></returns>
+		public bool AllowedGenres(string genre)
+		{
+			switch (genre)
+			{
+				case "Fiction":
+				case "Mystery":
+				case "Sci-Fi":
+				case "Romance":
+				case "Thriller":
+				case "Fantasy":
+					return true;
+				default:
+					return false;
+			}
+		}
 	}
 }
