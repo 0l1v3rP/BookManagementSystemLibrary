@@ -1,113 +1,163 @@
 ﻿
 using BookManagementSystemLibrary;
 using System;
+using System.Runtime;
 using System.Security.Cryptography.X509Certificates;
 
 namespace BookManagementSystemLibrary.ViewerConsoleApp
 {
 	class Program
 	{
-		
 		static BookService bookService = new BookService();
-
 		static void Main(string[] args)
 		{
-			string command;
-
-			do
+			FileInfo csvFile = new(@"..\..\..\..\books.csv");
+			bookService.Load(csvFile);
+			while (true)
 			{
-				Console.WriteLine("Enter a command: \n");
-				Console.WriteLine("\tadd book");
-				Console.WriteLine("\tremove book");
-				Console.WriteLine("\tupdate book");
-				Console.WriteLine("\tlists book");
-				Console.WriteLine("\tlist authors");
-				Console.WriteLine("\tshow statistics");
-				Console.WriteLine("\tsearch by");
-				Console.WriteLine("\tedit");
-				Console.WriteLine("\treviews");
+				string? command;
 
-				command = Console.ReadLine();
-
-				switch (command)
+				do
 				{
-					case "add book":
-						AddBook();
-						break;
-					case "remove book":
-						RemoveBook();
-						break;
-					case "update book":
-						UpdateBook();
-						break;
-					case "list books":
-						ListBooks();
-						break;
-					case "list authors":
-						ListAuthors();
-						break;
-					case "show statistics":
-						ShowStatistics();
-						break;
-					case "search by":
-						SearchBy();
-						break;
-					case "edit":
-						Edit();
-						break;
-					case "reviews":
-						Reviews();
-						break;
-					default:
-						Console.WriteLine("Unknown command.");
-						break;
-				}
+					Console.WriteLine("Enter a command:");
+					Console.WriteLine("\tadd book");
+					Console.WriteLine("\tremove book");
+					Console.WriteLine("\tupdate book");
+					Console.WriteLine("\tlist books");
+					Console.WriteLine("\tlist authors");
+					Console.WriteLine("\tshow statistics");
+					Console.WriteLine("\tsearch by");
+					Console.WriteLine("\tedit");
+					Console.WriteLine("\treviews");
 
-			} while (!string.IsNullOrWhiteSpace(command));
+					command = Console.ReadLine();
+
+					switch (command)
+					{
+						case "add book":
+							AddBook();
+							break;
+						case "remove book":
+							RemoveBook();
+							break;
+						case "update book":
+							UpdateBook();
+							break;
+						case "list books":
+							ListBooks();
+							break;
+						case "list authors":
+							ListAuthors();
+							break;
+						case "show statistics":
+							ShowStatistics();
+							break;
+						case "search by":
+							SearchBy();
+							break;
+						case "edit":
+							Edit();
+							break;
+						case "reviews":
+							Reviews();
+							break;
+						default:
+							Console.WriteLine("Unknown command.");
+							break;
+					}
+
+				} while (!string.IsNullOrWhiteSpace(command));
+			}
 
 		}
 
 		static void AddBook()
 		{
-			Console.Write("Enter book ID: ");
-			int id = int.Parse(Console.ReadLine());
+			try
+			{
+				Console.Write("Enter book ID: ");
+				if (!int.TryParse(Console.ReadLine(), out int id))
+				{
+					Console.WriteLine("Invalid input. Please enter a valid number for the book ID.");
+					return;
+				}
 
-			Console.Write("Enter book description: ");
-			string description = Console.ReadLine();
+				Console.Write("Enter book description: ");
+				string? description = Console.ReadLine();
+				if (string.IsNullOrWhiteSpace(description))
+				{
+					Console.WriteLine("Invalid input. Please enter a valid description for the book.");
+					return;
+				}
 
-			Console.Write("Enter book genre: ");
-			string genre = Console.ReadLine();
+				Console.Write("Enter book genre: ");
+				string? genre = Console.ReadLine();
+				if (string.IsNullOrWhiteSpace(genre))
+				{
+					Console.WriteLine("Invalid input. Please enter a valid genre for the book.");
+					return;
+				}
 
-			Console.Write("Enter book title: ");
-			string title = Console.ReadLine();
+				Console.Write("Enter book title: ");
+				string? title = Console.ReadLine();
+				if (string.IsNullOrWhiteSpace(title))
+				{
+					Console.WriteLine("Invalid input. Please enter a valid title for the book.");
+					return;
+				}
 
-			Console.Write("Enter author ID: ");
-			Author? author = configureAuthor();
+				Author? author = configureAuthor();
+				if (author == null)
+				{
+					Console.WriteLine("No author provided or an error occurred while creating/selecting the author.");
+					return;
+				}
 
+				if (bookService.Contains(id))
+				{
+					Console.WriteLine("This book ID is already in use. Please enter a unique ID.");
+					return;
+				}
 
-			bookService.AddBook(id, description, genre, title, author, null);
+				bookService.AddBook(id, description, genre, title, author, null);
+				Console.WriteLine($"Book '{title}' added successfully.");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+			}
 		}
+
 
 		static void RemoveBook()
 		{
 			Console.Write("Enter book ID: ");
-			int id = int.Parse(Console.ReadLine());
-
-			bookService.DeleteBook(id);
+			if (int.TryParse(Console.ReadLine(), out int id))
+			{
+				bookService.DeleteBook(id);
+			}
+			else
+			{
+				Console.WriteLine("Error occurred. Invalid input.");
+			}
 		}
+
 
 		static void UpdateBook()
 		{
 			Console.Write("Enter book ID: ");
-			int id = int.Parse(Console.ReadLine());
-
-			var book = bookService.SearchBook(id);
-			if (book != null)
+			if (int.TryParse(Console.ReadLine(), out int id))
 			{
-				Console.Write("Enter new book title: ");
-				book.Title = Console.ReadLine();
-				bookService.UpdateBook(book);
+				var book = bookService.SearchBook(id);
+				if (book != null)
+				{
+					Console.Write("Enter new book title: ");
+					book.Title = Console.ReadLine() ?? "";
+					bookService.UpdateBook(book);
+				}
 			}
+
+			
 		}
 
 		static void ListBooks()
@@ -149,9 +199,10 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 		static void SearchBy()
 		{
 			Console.Write("Search by (1- author, 2- genre, 3- rating): ");
-			int choice = int.Parse(Console.ReadLine());
+			int.TryParse(Console.ReadLine(), out int choice);
 			Console.Write("Enter query: ");
-			string query = Console.ReadLine();
+			string? query = Console.ReadLine();
+			query ??= "";
 
 			switch (choice)
 			{
@@ -181,9 +232,13 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 
 		static void Edit()
 		{
-			Console.WriteLine("Enter book ID to edit: ");
-			int id = int.Parse(Console.ReadLine());
-
+			int id;
+			while (true) {
+				Console.WriteLine("Enter book ID to edit: ");
+				if (int.TryParse(Console.ReadLine(), out  id)) break;
+				else Console.WriteLine("Invalid input !");
+			}
+			
 			Console.WriteLine($"You chose to edit {bookService[id]}");
 
 			var book = bookService.SearchBook(id);
@@ -195,11 +250,15 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 				Console.WriteLine("3 - Genre");
 				Console.WriteLine("4 - Author");
 
-				int choice = int.Parse(Console.ReadLine());
+				int choice = int.Parse(Console.ReadLine() ?? "0");
 				switch (choice)
 				{
 					case 4:
-						book.Author = configureAuthor();
+						Author? author = configureAuthor();
+						if (author != null)
+						{
+							book.Author = author;
+						}
 						break;
 					default:
 						Console.WriteLine("Invalid choice.");
@@ -215,75 +274,143 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 
 		private static Author? configureAuthor()
 		{
-			Console.WriteLine("Enter 'n' to create a new author, or 'e' to use an existing author: ");
-			char authorChoice = char.Parse(Console.ReadLine());
-			Author author = null;
-			if (authorChoice == 'n')
+			try
 			{
-				while (true)
+				Console.WriteLine("Enter 'n' to create a new author, or 'e' to use an existing author: ");
+				char authorChoice;
+				if (!char.TryParse(Console.ReadLine(), out authorChoice))
 				{
-					Console.WriteLine("Enter a unique Id for the author: ");
-					if (int.TryParse(Console.ReadLine(), out int authorId))
-					{
-						if (!bookService.GetAuthors().Any(author => author.Id == authorId))
-						{
-							Console.WriteLine("Enter author name: ");
-							string name = Console.ReadLine();
-							author = new Author(authorId, name);
-							break;
-						}
-						else
-						{
-							Console.WriteLine("This Id is already in use. Please enter a unique Id.");
-						}
-					}
-					else
-					{
-						Console.WriteLine("Invalid input. Please enter a valid number for the author Id.");
-					}
+					Console.WriteLine("Invalid input. Please enter 'n' or 'e'.");
+					return null;
 				}
 
-			}
-			else if (authorChoice == 'e')
-			{
-				while (author == null)
+				Author? author = null;
+				switch (authorChoice)
 				{
-					Console.WriteLine("Enter author ID: ");
-					int authorId = int.Parse(Console.ReadLine());
-					author = bookService.GetAuthors().FirstOrDefault(a => a.Id == authorId);
-					if (author == null)
-					{
-						Console.WriteLine("Incorrect id");
-					}
+					case 'n':
+						while (true)
+						{
+							Console.WriteLine("Enter a unique Id for the author: ");
+							if (int.TryParse(Console.ReadLine(), out int authorId))
+							{
+								if (!bookService.GetAuthors().Any(author => author.Id == authorId))
+								{
+									Console.WriteLine("Enter author name: ");
+									string? name = Console.ReadLine();
+									if (string.IsNullOrWhiteSpace(name))
+									{
+										Console.WriteLine("Invalid name. Please enter a valid name.");
+										continue;
+									}
+									author = new Author(authorId, name);
+									break;
+								}
+								else
+								{
+									Console.WriteLine("This Id is already in use. Please enter a unique Id.");
+								}
+							}
+							else
+							{
+								Console.WriteLine("Invalid input. Please enter a valid number for the author Id.");
+							}
+						}
+						break;
+					case 'e':
+						while (author == null)
+						{
+							Console.WriteLine("Enter author ID: ");
+							if (int.TryParse(Console.ReadLine(), out int authorId))
+							{
+								author = bookService.GetAuthors().FirstOrDefault(a => a.Id == authorId);
+								if (author == null)
+								{
+									Console.WriteLine("Incorrect id. No author found with the given ID.");
+								}
+							}
+							else
+							{
+								Console.WriteLine("Invalid input. Please enter a valid number for the author Id.");
+							}
+						}
+						break;
+					default:
+						Console.WriteLine("Invalid choice. Please enter 'n' to create a new author or 'e' to use an existing one.");
+						return null;
 				}
-				
+
+				return author;
 			}
-			return author;
+			catch (Exception ex)
+			{
+				Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+				return null;
+			}
 		}
+
 
 		static void Reviews()
 		{
-			Console.Write("Enter book ID: ");
-			int id = int.Parse(Console.ReadLine());
-
-			var book = bookService.SearchBook(id);
-			if (book != null)
+			try
 			{
-				Console.Write("Write a review: ");
-				string reviewContent = Console.ReadLine();
-				Console.Write("Enter a rating (1-5): ");
-				int rating = int.Parse(Console.ReadLine());
-				var newReview = new Review(book.Reviews.Count + 1, reviewContent, rating);
-				bookService.AddReview(newReview, id);
+				Console.Write("Enter book ID: ");
 
-				Console.WriteLine($"Reviews for {book.Title}:");
-				foreach (var review in book.Reviews)
+				if (!int.TryParse(Console.ReadLine() , out int id))
 				{
-					Console.WriteLine($"ID: {review.Id}, Content: {review.Content}, Rating: {review.Rating}");
+					Console.WriteLine("Invalid input. Please enter a number.");
+					return;
 				}
+				var book = bookService.SearchBook(id);
+				if (book == null)
+				{
+					Console.WriteLine($"No book found with the ID: {id}");
+					return;
+				}
+
+				Console.Write("See reviews[1] or add a review[2] ?: ");
+
+				if (!int.TryParse(Console.ReadLine(), out int option) || option != 1 || option != 2)
+				{
+					Console.WriteLine("Invalid input. Please enter a number.");
+					return;
+				}
+
+				if(option == 1)
+				{
+					Console.WriteLine($"Reviews for {book.Title}:");
+					foreach (var review in book.Reviews)
+					{
+						Console.WriteLine($"ID: {review.Id}, Content: {review.Content}, Rating: {review.Rating}");
+					}
+				}
+				if (option == 2)
+				{
+					Console.WriteLine("Write a review: ");
+					string? reviewContent = Console.ReadLine();
+					if (string.IsNullOrWhiteSpace(reviewContent))
+					{
+						Console.WriteLine("Invalid review content.");
+						return;
+					}
+
+					Console.WriteLine("Enter a rating (1-5): ");
+					int rating;
+					if (!int.TryParse(Console.ReadLine(), out rating) || rating < 1 || rating > 5)
+					{
+						Console.WriteLine("Invalid rating. Please enter a number between 1 and 5.");
+						return;
+					}
+
+					var newReview = new Review(book.Reviews.Count + 1, reviewContent, rating);
+					bookService.AddReview(newReview, id);
+				}
+
+			
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"An unexpected error occurred: {ex.Message}");
 			}
 		}
-
-
 	}
 }
