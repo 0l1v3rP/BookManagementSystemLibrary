@@ -19,9 +19,9 @@
                 <MenuItem Header="About" Click="About_Click"/>
             </MenuItem>
         </Menu>
-        <local:BookManagmentUserControl x:Name="BookManagmentUserControl" Loaded="BookManagmentUserControl_Loaded"/>
 
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" RenderTransformOrigin="0.499,0.528" Height="417">
-        </Grid>
+
+            <local:BookManagmentUserControl x:Name="bookManagment" />
+        
     </DockPanel>
 </Window>

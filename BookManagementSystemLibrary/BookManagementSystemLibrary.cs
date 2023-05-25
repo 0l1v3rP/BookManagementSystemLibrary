@@ -402,6 +402,11 @@ namespace BookManagementSystemLibrary
 			return _books.GetEnumerator();
 		}
 
+		public IEnumerable<Book> GetBooks()
+		{
+			return _books;
+		}
+
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
