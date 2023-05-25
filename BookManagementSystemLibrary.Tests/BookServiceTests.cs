@@ -203,5 +203,175 @@ namespace BookManagementSystemLibrary.Tests
 			Assert.IsFalse(_bookService.AllowedGenres("1234"));
 			Assert.IsFalse(_bookService.AllowedGenres("Test"));
 		}
+
+		[Test]
+		public void DeleteBook_ShouldRemoveBook()
+		{
+			Author author = new Author(1, "test Author");
+			Book book = new Book(1, "Test Book", "Fiction", "Test Description", author);
+
+			_bookService.AddBook(book);
+			_bookService.DeleteBook(book.Id);
+
+			Assert.AreEqual(0, _bookService.BookCount);
+			Assert.IsFalse(_bookService.Contains(book.Id));
+		}
+
+		[Test]
+		public void UpdateBook_ShouldUpdateExistingBook()
+		{
+			Author author = new Author(1, "test Author");
+			Book book = new Book(1, "Test Book", "Fiction", "Test Description", author);
+			Book updatedBook = new Book(1, "Updated Book", "Mystery", "Updated Description", author);
+
+			_bookService.AddBook(book);
+			_bookService.UpdateBook(updatedBook);
+
+			Book retrievedBook = _bookService.SearchBook(book.Id);
+			Assert.AreEqual(updatedBook.Title, retrievedBook.Title);
+			Assert.AreEqual(updatedBook.Genre, retrievedBook.Genre);
+			Assert.AreEqual(updatedBook.Description, retrievedBook.Description);
+			Assert.AreEqual(updatedBook.Author, retrievedBook.Author);
+		}
+
+		[Test]
+		public void UpdateBook_ShouldThrowExceptionForNonExistingBook()
+		{
+			Author author = new Author(1, "test Author");
+			Book book = new Book(1, "Test Book", "Fiction", "Test Description", author);
+
+			Assert.Throws<ArgumentException>(() => _bookService.UpdateBook(book));
+		}
+
+		[Test]
+		public void GetBooksByAuthorID_ShouldReturnMatchingBooks()
+		{
+			Author author1 = new Author(1, "Author 1");
+			Author author2 = new Author(2, "Author 2");
+
+			Book book1 = new Book(1, "Book 1", "Fiction", "Description 1", author1);
+			Book book2 = new Book(2, "Book 2", "Fiction", "Description 2", author2);
+			Book book3 = new Book(3, "Book 3", "Fiction", "Description 3", author1);
+
+			_bookService.AddBook(book1);
+			_bookService.AddBook(book2);
+			_bookService.AddBook(book3);
+
+			var result = _bookService.GetBooksByAuthorID(author1.Id);
+
+			Assert.AreEqual(2, result.Count());
+			CollectionAssert.Contains(result, book1);
+			CollectionAssert.Contains(result, book3);
+		}
+
+		[Test]
+		public void GetBooksByGenre_ShouldReturnMatchingBooks()
+		{
+			Author author1 = new Author(1, "Author 1");
+			Author author2 = new Author(2, "Author 2");
+
+			Book book1 = new Book(1, "Book 1", "Fiction", "Description 1", author1);
+			Book book2 = new Book(2, "Book 2", "Mystery", "Description 2", author2);
+			Book book3 = new Book(3, "Book 3", "Fiction", "Description 3", author1);
+
+			_bookService.AddBook(book1);
+			_bookService.AddBook(book2);
+			_bookService.AddBook(book3);
+
+			var result = _bookService.GetBooksByGenre("Fiction");
+
+			Assert.AreEqual(2, result.Count());
+			CollectionAssert.Contains(result, book1);
+			CollectionAssert.Contains(result, book3);
+		}
+
+		[Test]
+		public void GetBooksByRating_ShouldReturnMatchingBooks()
+		{
+			Author author1 = new Author(1, "Author 1");
+			Author author2 = new Author(2, "Author 2");
+
+			Book book1 = new Book(1, "Book 1", "Fiction", "Description 1", author1);
+			Book book2 = new Book(2, "Book 2", "Fiction", "Description 2", author2);
+			Book book3 = new Book(3, "Book 3", "Fiction", "Description 3", author1);
+
+			Review review1 = new Review(1, "Review 1", 4);
+			Review review2 = new Review(2, "Review 2", 5);
+			Review review3 = new Review(3, "Review 3", 3);
+
+			book1.AddReview(review1);
+			book2.AddReview(review2);
+			book3.AddReview(review3);
+
+			_bookService.AddBook(book1);
+			_bookService.AddBook(book2);
+			_bookService.AddBook(book3);
+
+			var result = _bookService.GetBooksByRating(4);
+
+			Assert.AreEqual(1, result.Count());
+			CollectionAssert.Contains(result, book1);
+			CollectionAssert.Contains(result, book2);
+		}
+
+		[Test]
+		public void GetBooksByRatingIn_ShouldReturnMatchingBooks()
+		{
+			Author author1 = new Author(1, "Author 1");
+			Author author2 = new Author(2, "Author 2");
+
+			Book book1 = new Book(1, "Book 1", "Fiction", "Description 1", author1);
+			Book book2 = new Book(2, "Book 2", "Fiction", "Description 2", author2);
+			Book book3 = new Book(3, "Book 3", "Fiction", "Description 3", author1);
+
+			Review review1 = new Review(1, "Review 1", 4);
+			Review review2 = new Review(2, "Review 2", 5);
+			Review review3 = new Review(3, "Review 3", 3);
+
+			book1.AddReview(review1);
+			book2.AddReview(review2);
+			book3.AddReview(review3);
+
+			_bookService.AddBook(book1);
+			_bookService.AddBook(book2);
+			_bookService.AddBook(book3);
+
+			var result = _bookService.GetBooksByRatingIn(3, 4);
+
+			Assert.AreEqual(2, result.Count());
+			CollectionAssert.Contains(result, book1);
+			CollectionAssert.Contains(result, book3);
+		}
+
+		[Test]
+		public void GetReviewsOrNull_ShouldReturnReviewsForExistingBook()
+		{
+			Author author = new Author(1, "Author 1");
+			Book book = new Book(1, "Book 1", "Fiction", "Description 1", author);
+
+			Review review1 = new Review(1, "Review 1", 4);
+			Review review2 = new Review(2, "Review 2", 5);
+			book.AddReview(review1);
+			book.AddReview(review2);
+
+			_bookService.AddBook(book);
+
+			var result = _bookService.GetReviewsOrNull(book.Id);
+
+			Assert.IsNotNull(result);
+			Assert.AreEqual(2, result.Count);
+			CollectionAssert.Contains(result, review1);
+			CollectionAssert.Contains(result, review2);
+		}
+
+		[Test]
+		public void GetReviewsOrNull_ShouldReturnNullForNonExistingBook()
+		{
+			var result = _bookService.GetReviewsOrNull(1);
+
+			Assert.IsNull(result);
+		}
+
+
 	}
 }

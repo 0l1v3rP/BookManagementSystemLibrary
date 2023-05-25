@@ -191,15 +191,15 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 				.SelectMany(b => b.Reviews)
 				.Average(r => r.Rating);
 
-			double averageBooksPerAuthor = bookService
+			int averageBooksPerAuthor = (int)bookService
 				.GroupBy(b => b.Author)
 				.Average(g => g.Count());
 
-			double averageBooksPerGenre = bookService
+			int averageBooksPerGenre = (int)bookService
 				.GroupBy(b => b.Genre)
 				.Average(g => g.Count());
 
-			Console.WriteLine($"Average rating: {averageRating}");
+			Console.WriteLine($"Average rating: {averageRating.ToString("0.00")}");
 			Console.WriteLine($"Average number of books per author: {averageBooksPerAuthor}");
 			Console.WriteLine($"Average number of books per genre: {averageBooksPerGenre}");
 		}

@@ -1,14 +1,15 @@
 Book ID,Title,Genre,Description,Author ID,Author Name,Review ID,Review Content,Rating
-1,"The Great Book","Fiction","A fascinating tale of adventure.",1,"John Smith",1,"A riveting read.",4
-1,"The Great Book","Fiction","A fascinating tale of adventure.",1,"John Smith",2,"Could not put it down.",5
-2,"Another Brilliant Novel","Mystery","A mystery that will keep you guessing.",1,"John Smith",3,"Left me guessing until the end.",4
-2,"Another Brilliant Novel","Mystery","A mystery that will keep you guessing.",1,"John Smith",4,"A truly suspenseful story.",5
-3,"Yet Another Great Book","Sci-Fi","A journey through space and time.",2,"Jane Doe",5,"A mind-bending adventure.",5
-3,"Yet Another Great Book","Sci-Fi","A journey through space and time.",2,"Jane Doe",6,"A thrilling space journey.",4
-4,"The Fourth Great Novel","Historical","A deep dive into the past.",2,"Jane Doe",7,"A captivating historical story.",5
-4,"The Fourth Great Novel","Historical","A deep dive into the past.",3,"James Brown",8,"An engrossing tale of the past.",4
-5,"The Fifth Book","Fantasy","A magical journey.",3,"James Brown",9,"An enchanting story.",5
-6,"Book Without Reviews","Horror","A chilling tale.",4,"Jill White",,
-7,,,"An author with no books.",5,"George Green",,
-1,"The Great Book","Fiction","A fascinating tale of adventure.",6,"Elizabeth Black",10,"A different perspective.",3
-,,,"Review with out-of-range rating.",1,"John Smith",11,"A non-standard rating.",6
+1,The Great Book,Fiction,A fascinating tale of adventure.,1,John Smith,1,A riveting read.,4
+1,The Great Book,Fiction,A fascinating tale of adventure.,1,John Smith,2,Could not put it down.,5
+2,Another Brilliant Novel,Mystery,A mystery that will keep you guessing.,1,John Smith,3,Left me guessing until the end.,4
+2,Another Brilliant Novel,Mystery,A mystery that will keep you guessing.,1,John Smith,4,A truly suspenseful story.,5
+3,Yet Another Great Book,Sci-Fi,A journey through space and time.,2,Jane Doe,5,A mind-bending adventure.,5
+3,Yet Another Great Book,Sci-Fi,A journey through space and time.,2,Jane Doe,6,A thrilling space journey.,4
+4,The Fourth Great Novel,History,A deep dive into the past.,2,Jane Doe,7,A captivating historical story.,5
+5,The Fifth Book,Fantasy,A magical journey.,3,James Brown,9,An enchanting story.,5
+1,The Great Book,Fiction,A fascinating tale of adventure.,1,John Smith,1,A riveting read.,4
+2,Another Brilliant Novel,Mystery,A mystery that will keep you guessing.,1,John Smith,2,Could not put it down.,5
+3,Yet Another Great Book,Sci-Fi,A journey through space and time.,2,Jane Doe,3,A mind-bending adventure.,5
+4,The Fourth Great Novel,History,A deep dive into the past.,2,Jane Doe,4,A captivating historical story.,5
+5,The Fifth Book,Fantasy,A magical journey.,3,James Brown,5,An enchanting story.,5
+8,A New Book,Thriller,An edge-of-your-seat suspense.,3,James Brown,6,Kept me guessing till the end.,4

@@ -249,15 +249,16 @@ namespace BookManagementSystemLibrary
 			{
 				throw new ArgumentException("Both author and authorId cannot be null.");
 			}
+
 			if (bookAuthor == null)
 			{
-				throw new ArgumentException("Error occured.");
-
+				throw new ArgumentException("Invalid author data.");
 			}
+
 			_books.Add(new Book(bookId, description, genre, title, bookAuthor));
 		}
 
-	
+
 		/// <summary>
 		/// tries to add a book to a list of books, if there's already a book with the same id
 		/// then the function will retunr false otherwise true, 
@@ -329,7 +330,7 @@ namespace BookManagementSystemLibrary
 			}
 			if (!AllowedGenres(book.Genre))
 			{
-				throw new ArgumentException("Wrong genre");
+				throw new ArgumentException($"Wrong genre {book.Genre}");
 			}
 		}
 
@@ -366,7 +367,7 @@ namespace BookManagementSystemLibrary
 		/// <returns></returns>
 		public bool AddReview(Review review, int id)
 		{
-			Book existingBook = _books.FirstOrDefault(b => b.Id == id);
+			Book? existingBook = _books.FirstOrDefault(b => b.Id == id);
 			if (existingBook != null && existingBook.Reviews.All(r => r.Id != review.Id))
 			{
 				existingBook.AddReview(review);
@@ -446,7 +447,7 @@ namespace BookManagementSystemLibrary
 		/// <returns></returns>
 		public IEnumerable<Book> GetBooksByRating(int rating)
 		{
-			return _books.Where(b => b.Reviews.Average(b => b.Rating) <= rating);
+			return _books.Where(b => b.Reviews.Average(b => b.Rating) == rating);
 		}
 
 		/// <summary>
@@ -505,9 +506,20 @@ namespace BookManagementSystemLibrary
 			{
 				string[] line = lines[i].Split(',');
 
+				if (line.Length != 9)
+				{
+					Console.WriteLine($"Invalid entry at line {i + 1}: {lines[i]}");
+					continue;
+				}
+
 				if (int.TryParse(line[0], out int bookId) &&
+					!string.IsNullOrEmpty(line[1]) &&
+					!string.IsNullOrEmpty(line[2]) &&
+					!string.IsNullOrEmpty(line[3]) &&
 					int.TryParse(line[4], out int authorId) &&
+					!string.IsNullOrEmpty(line[5]) &&
 					int.TryParse(line[6], out int reviewId) &&
+					!string.IsNullOrEmpty(line[7]) &&
 					int.TryParse(line[8], out int reviewRating))
 				{
 					string bookTitle = line[1];
@@ -521,14 +533,17 @@ namespace BookManagementSystemLibrary
 
 					if (book == null)
 					{
-						book = new Book(bookId, bookDescription, bookGenre, bookTitle, author);
+						book = new Book(bookId, bookTitle, bookGenre, bookDescription, author);
 						try
 						{
 							AddBook(book);
 						}
-						catch 
+						catch (Exception ex)
 						{
+
 							Console.WriteLine($"Invalid entry at line {i + 1}: {lines[i]}");
+							Console.WriteLine($"Exception: {ex.Message}");
+							continue;
 						}
 					}
 
@@ -544,6 +559,7 @@ namespace BookManagementSystemLibrary
 				}
 			}
 		}
+
 
 
 		/// <summary>
@@ -606,6 +622,7 @@ namespace BookManagementSystemLibrary
 				case "Romance":
 				case "Thriller":
 				case "Fantasy":
+				case "History":
 					return true;
 				default:
 					return false;
