@@ -67,22 +67,20 @@
                     </StackPanel>
                 </Grid>
             </GroupBox>
-            <ListBox x:Name="BookListBox" Grid.Row="1" Margin="5,145,0,5" Width="258" HorizontalAlignment="Left" Grid.ColumnSpan="2" Grid.RowSpan="3">
-            </ListBox>
+            <ListBox x:Name="BookListBox" Grid.Row="1" Margin="0,175,0,0" Width="262" HorizontalAlignment="Left" Grid.RowSpan="3"/>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,10" Grid.RowSpan="3" Width="98">
                 <Button Content="Clear Filter" Width="98" Click="Clear_Button_Click" Margin="0,0,0,10" />
                 <Button Content="Apply Filter" Width="98" Click="Apply_Button_Click" />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,145,0,47" Width="80" Grid.RowSpan="3">
-                
+
                 <Button Content="Add" Width="80" Click="Add_Button_Click" Margin="0,0,0,10" />
                 <Button Content="Edit" Width="80" Click="Edit_Button_Click" Margin="0,0,0,10" />
                 <Button Content="Remove" Width="80" Click="Remove_Button_Click" Margin="0,0,0,10"/>
             </StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,58,0,-2" Width="80">
-                <Button Content="Details" Width="80" Click="Details_Button_Click"  Margin="0,0,0,10" />
-                <Button Content="Show Reviews" Width="80" Click="ShowReviews_Button_Click" >
+                <Button Content="Reviews" Width="80" Click="Reviews_Button_Click" Height="51" >
                 </Button>
             </StackPanel>
         </Grid>

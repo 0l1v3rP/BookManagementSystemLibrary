@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -79,35 +80,73 @@ namespace BookManagmentSystemGUI
 
 		private void Add_Button_Click(object sender, RoutedEventArgs e)
 		{
-			int prevCount = bookService.BookCount;
-			var addBookWindod = new AddBookWindow(bookService);
-			addBookWindod.ShowDialog();
-			if (bookService.BookCount > prevCount)
+			int prevCount = bookService == null ? 0 : bookService.BookCount;
+			if (bookService != null)
 			{
-				BookListBox.Items.Add(bookService.GetBooks().Last().Title);
+				var addBookWindod = new AddBookWindow(bookService);
+				addBookWindod.ShowDialog();
+				if (bookService.BookCount > prevCount)
+				{
+					BookListBox.Items.Add(bookService.GetBooks().Last().Title);
+				}
 			}
-
-
 		}
-
 		private void Edit_Button_Click(object sender, RoutedEventArgs e)
 		{
+			Book? bookToEdit = selectedBook();
+			if (bookToEdit != null)
+				{
+					var editBookWindow = new EditBookWindow(ref bookToEdit);
+					editBookWindow.ShowDialog();
+					int selectedIndex = BookListBox.SelectedIndex;
+					BookListBox.Items[selectedIndex] = bookToEdit.Title;
 
+				}
+			
 		}
+
 
 		private void Remove_Button_Click(object sender, RoutedEventArgs e)
 		{
+			Book? bookToRemove = selectedBook();
 
+			if (bookToRemove != null)
+				{
+					MessageBoxResult result = MessageBox.Show($"Are you sure you want to remove the book '{bookToRemove.Title}'?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+					if (result == MessageBoxResult.Yes)
+					{
+						bookService.RemoveBook(bookToRemove);
+						BookListBox.Items.Remove(BookListBox.SelectedItem);
+						MessageBox.Show("Book removed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+					}
+					else
+					{
+						MessageBox.Show("Book removal canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
+					}
+				}
+			
 		}
 
-		private void Details_Button_Click(object sender, RoutedEventArgs e)
+		private Book? selectedBook()
 		{
-
+			if (bookService != null && BookListBox.SelectedItem != null)
+			{
+				string selectedBookTitle = BookListBox.SelectedItem.ToString();
+				return bookService.GetBooks().FirstOrDefault(b => b.Title.Equals(selectedBookTitle));
+			}
+			return null;
 		}
-
-		private void ShowReviews_Button_Click(object sender, RoutedEventArgs e)
+		private void Reviews_Button_Click(object sender, RoutedEventArgs e)
 		{
+			Book? reviewsOf = selectedBook();
 
+			if (reviewsOf != null)
+			{
+				var reviewsWindow = new ReviewsWindow(reviewsOf.Reviews);
+				reviewsWindow.ShowDialog();
+			}
 		}
+		
 	}
 }

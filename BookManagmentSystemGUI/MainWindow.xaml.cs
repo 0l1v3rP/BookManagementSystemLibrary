@@ -57,6 +57,10 @@ namespace BookManagmentSystemGUI
 				{
 					bookService.Load(csvFile);
 					bookManagment.bookService = bookService;
+					foreach(Book book in bookService)
+					{
+						bookManagment.BookListBox.Items.Add(book.Title);
+					}
 
 				}
 			}

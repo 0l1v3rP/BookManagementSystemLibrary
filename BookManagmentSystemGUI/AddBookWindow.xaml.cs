@@ -31,7 +31,7 @@ namespace BookManagmentSystemGUI
         {
             InitializeComponent();
             _bookService = bookService;
-			int newId = 0;
+			int newId = 1;
 			while (_bookService.Any(b => b.Id == newId))
 			{
 				++newId;
@@ -74,7 +74,7 @@ namespace BookManagmentSystemGUI
 				MessageBox.Show("Please select a valid genre.");
 				return;
 			}
-			string genre = genreItem.Content.ToString();
+			string genre = genreItem.Content.ToString() ?? "";
 
 			string description = DescriptionTextBox.Text;
 
