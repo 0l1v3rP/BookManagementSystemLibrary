@@ -74,7 +74,7 @@ namespace BookManagmentSystemGUI
 				MessageBox.Show("Please select a valid genre.");
 				return;
 			}
-			string genre = genreItem.Content.ToString();
+			string genre = genreItem.Content.ToString() ?? "";
 
 			string description = DescriptionTextBox.Text;
 

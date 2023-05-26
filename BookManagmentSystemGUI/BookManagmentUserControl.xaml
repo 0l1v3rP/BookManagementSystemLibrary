@@ -81,8 +81,7 @@
                 <Button Content="Remove" Width="80" Click="Remove_Button_Click" Margin="0,0,0,10"/>
             </StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,58,0,-2" Width="80">
-                <Button Content="Details" Width="80" Click="Details_Button_Click"  Margin="0,0,0,10" />
-                <Button Content="Show Reviews" Width="80" Click="ShowReviews_Button_Click" >
+                <Button Content="Reviews" Width="80" Click="Reviews_Button_Click" Height="51" >
                 </Button>
             </StackPanel>
         </Grid>

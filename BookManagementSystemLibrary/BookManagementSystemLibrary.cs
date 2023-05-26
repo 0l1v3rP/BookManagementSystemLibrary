@@ -629,5 +629,13 @@ namespace BookManagementSystemLibrary
 					return false;
 			}
 		}
+		/// <summary>
+		/// removes book from a list of books
+		/// </summary>
+		/// <param name="bookToRemove">book that will be removed</param>
+		public void RemoveBook(Book bookToRemove)
+		{
+			_books.Remove(bookToRemove);
+		}
 	}
 }
