@@ -5,8 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookManagmentSystemGUI"
         mc:Ignorable="d"
-        Title="AddBookWindow" Height="450" Width="800">
+        Title="AddBookWindow" Width="300" SizeToContent="Height">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="ID:" Width="70"/>
+            <TextBox x:Name="IdTextBox" Width="180" TextChanged="IdTextBox_TextChanged"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Title:" Width="70"/>
+            <TextBox x:Name="TitleTextBox" Width="180"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Genre:" Width="70"/>
+            <ComboBox x:Name="GenreComboBox" Width="180">
+                <ComboBoxItem Content="Fiction" />
+                <ComboBoxItem Content="Mystery" />
+                <ComboBoxItem Content="Sci-Fi" />
+                <ComboBoxItem Content="Romance" />
+                <ComboBoxItem Content="Thriller" />
+                <ComboBoxItem Content="Fantasy" />
+                <ComboBoxItem Content="History" />
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Margin="10">
+            <TextBlock Text="Description:"/>
+            <TextBox x:Name="DescriptionTextBox" TextWrapping="Wrap" AcceptsReturn="True" Height="100"/>
+        </StackPanel>
+
+        <Button Grid.Row="4" Click="AddAuthor_Button_Click" Content="Add Author" HorizontalAlignment="Center" Margin="10"/>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="OK" Width="110" Margin="0,0,10,0" Click="OK_Button_Click"/>
+            <Button Content="Cancel" Width="110" Click="Cancel_Button_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

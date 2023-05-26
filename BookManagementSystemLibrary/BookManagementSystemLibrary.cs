@@ -320,10 +320,6 @@ namespace BookManagementSystemLibrary
 			{
 				throw new ArgumentException("Book genre cannot be null or empty.");
 			}
-			if (string.IsNullOrEmpty(book.Description))
-			{
-				throw new ArgumentException("Book description cannot be null or empty.");
-			}
 			if (book.Author == null)
 			{
 				throw new ArgumentException("Book author cannot be null.");

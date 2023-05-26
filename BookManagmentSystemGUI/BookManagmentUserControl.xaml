@@ -75,6 +75,7 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,145,0,47" Width="80" Grid.RowSpan="3">
+                
                 <Button Content="Add" Width="80" Click="Add_Button_Click" Margin="0,0,0,10" />
                 <Button Content="Edit" Width="80" Click="Edit_Button_Click" Margin="0,0,0,10" />
                 <Button Content="Remove" Width="80" Click="Remove_Button_Click" Margin="0,0,0,10"/>
@@ -82,7 +83,6 @@
             <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,58,0,-2" Width="80">
                 <Button Content="Details" Width="80" Click="Details_Button_Click"  Margin="0,0,0,10" />
                 <Button Content="Show Reviews" Width="80" Click="ShowReviews_Button_Click" >
-
                 </Button>
             </StackPanel>
         </Grid>

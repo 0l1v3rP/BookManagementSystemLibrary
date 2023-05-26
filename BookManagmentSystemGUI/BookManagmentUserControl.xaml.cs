@@ -79,6 +79,14 @@ namespace BookManagmentSystemGUI
 
 		private void Add_Button_Click(object sender, RoutedEventArgs e)
 		{
+			int prevCount = bookService.BookCount;
+			var addBookWindod = new AddBookWindow(bookService);
+			addBookWindod.ShowDialog();
+			if (bookService.BookCount > prevCount)
+			{
+				BookListBox.Items.Add(bookService.GetBooks().Last().Title);
+			}
+
 
 		}
 

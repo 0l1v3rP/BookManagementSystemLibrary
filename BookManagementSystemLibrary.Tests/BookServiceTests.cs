@@ -371,7 +371,5 @@ namespace BookManagementSystemLibrary.Tests
 
 			Assert.IsNull(result);
 		}
-
-
 	}
 }

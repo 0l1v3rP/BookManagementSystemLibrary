@@ -20,8 +20,8 @@
             </MenuItem>
         </Menu>
 
-
-            <local:BookManagmentUserControl x:Name="bookManagment" />
-        
+       
+       <local:BookManagmentUserControl x:Name="bookManagment" />
+       
     </DockPanel>
 </Window>
