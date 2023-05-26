@@ -8,8 +8,8 @@ namespace BookManagmentSystemGUI
 	/// </summary>
 	public partial class AddReviewWindow : Window
 	{
-		public string ReviewContent { get; private set; }
-		public int Rating { get; private set; }
+		public string ReviewContent { get; private set; } = "";
+		public int Rating { get; private set; } = 0;
 
 		public AddReviewWindow()
 		{

@@ -140,11 +140,11 @@ namespace BookManagementSystemLibrary
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public string[] this[int id]
+		public string this[int id]
 		{
 			get
 			{
-				return _books.Where(b => b.Id == id).Select(b => b.Title).ToArray();
+				return _books.First(b => b.Id == id).Title;
 			}
 		}
 
@@ -509,8 +509,7 @@ namespace BookManagementSystemLibrary
 
 				if (line.Length != 9)
 				{
-					Console.WriteLine($"Invalid entry at line {i + 1}: {lines[i]}");
-					continue;
+					throw new ArgumentException($"Invalid entry at line {i + 1}: {lines[i]}");
 				}
 
 				if (int.TryParse(line[0], out int bookId) &&
@@ -535,29 +534,29 @@ namespace BookManagementSystemLibrary
 					if (book == null)
 					{
 						book = new Book(bookId, bookTitle, bookGenre, bookDescription, author);
-						try
-						{
+						
+						
 							AddBook(book);
-						}
-						catch (Exception ex)
-						{
-
-							Console.WriteLine($"Invalid entry at line {i + 1}: {lines[i]}");
-							Console.WriteLine($"Exception: {ex.Message}");
-							continue;
-						}
+						
 					}
+					if (!book.Reviews.Any(r => r.Id == reviewId))
+					{
+						string reviewContent = line[7];
 
-					string reviewContent = line[7];
+						Review review = new Review(reviewId, reviewContent, reviewRating);
 
-					Review review = new Review(reviewId, reviewContent, reviewRating);
-
-					book.AddReview(review);
+						book.AddReview(review);
+					}
+					else
+					{
+						throw new ArgumentException("Invalid id");
+					}
 				}
 				else
 				{
-					Console.WriteLine($"Invalid entry at line {i + 1}: {lines[i]}");
+					throw new ArgumentException($"Invalid entry at line {i + 1}: {lines[i]}");
 				}
+
 			}
 		}
 
