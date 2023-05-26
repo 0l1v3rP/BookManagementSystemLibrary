@@ -31,7 +31,7 @@ namespace BookManagmentSystemGUI
 			AverageRatingTextBlock.Text = $"Average Rating: {_reviews.Average(r => r.Rating).ToString("0.00")}";
 			ReviewsListBox.ItemsSource = _reviews;
 		}
-
+		//TODO
 		private void Add_Button_Click(object sender, RoutedEventArgs e)
 		{
 			var addReviewWindow = new AddReviewWindow();
@@ -50,7 +50,7 @@ namespace BookManagmentSystemGUI
 				AverageRatingTextBlock.Text = $"Average Rating: {_reviews.Average(r => r.Rating)}";
 			}
 		}
-
+		//TODO
 		private void Remove_Button_Click(object sender, RoutedEventArgs e)
 		{
 			if (ReviewsListBox.SelectedItem is Review selectedReview)
