@@ -28,10 +28,16 @@ namespace BookManagmentSystemGUI
 			InitializeComponent();
 
 			CountTextBlock.Text = $"Count: {_reviews.Count}";
-			AverageRatingTextBlock.Text = $"Average Rating: {_reviews.Average(r => r.Rating).ToString("0.00")}";
+			if (_reviews.Count > 0)
+			{
+				AverageRatingTextBlock.Text = $"Average Rating: {_reviews.Average(r => r.Rating)}";
+			}
+			else
+			{
+				AverageRatingTextBlock.Text = "Average Rating: N/A";
+			}
 			ReviewsListBox.ItemsSource = _reviews;
 		}
-		//TODO
 		private void Add_Button_Click(object sender, RoutedEventArgs e)
 		{
 			var addReviewWindow = new AddReviewWindow();
@@ -45,22 +51,34 @@ namespace BookManagmentSystemGUI
 				var newReview = new Review(id, content, rating);
 
 				_reviews.Add(newReview);
+				ReviewsListBox.Items.Refresh();
 
 				CountTextBlock.Text = $"Count: {_reviews.Count}";
 				AverageRatingTextBlock.Text = $"Average Rating: {_reviews.Average(r => r.Rating)}";
 			}
 		}
-		//TODO
+
 		private void Remove_Button_Click(object sender, RoutedEventArgs e)
 		{
-			if (ReviewsListBox.SelectedItem is Review selectedReview)
+			if (sender is Button removeButton && removeButton.Tag is int reviewId)
 			{
+				Review selectedReview = _reviews.FirstOrDefault(r => r.Id == reviewId);
 				_reviews.Remove(selectedReview);
-				ReviewsListBox.Items.Remove(ReviewsListBox.SelectedItem);
+				
+				ReviewsListBox.Items.Refresh(); 
+
 				CountTextBlock.Text = $"Count: {_reviews.Count}";
-				AverageRatingTextBlock.Text = $"Average Rating: {_reviews.Average(r => r.Rating)}";
+				if (_reviews.Count > 0)
+				{
+					AverageRatingTextBlock.Text = $"Average Rating: {_reviews.Average(r => r.Rating)}";
+				}
+				else
+				{
+					AverageRatingTextBlock.Text = "Average Rating: N/A";
+				}
 			}
 		}
+
 
 		private int GenerateNewReviewId()
 		{

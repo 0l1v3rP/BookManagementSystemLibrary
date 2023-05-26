@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookManagmentSystemGUI"
         mc:Ignorable="d"
-        Title="AddReviewWindow" Height="374" Width="350">
+        Title="AddReviewWindow" Height="374" Width="370">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

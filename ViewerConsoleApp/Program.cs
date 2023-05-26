@@ -23,13 +23,14 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 					Console.WriteLine("Enter a command:");
 					Console.WriteLine("\tadd book");
 					Console.WriteLine("\tremove book");
-					Console.WriteLine("\tupdate book");
 					Console.WriteLine("\tlist books");
 					Console.WriteLine("\tlist authors");
 					Console.WriteLine("\tshow statistics");
 					Console.WriteLine("\tsearch by");
 					Console.WriteLine("\tedit");
 					Console.WriteLine("\treviews");
+					Console.WriteLine("press Enter to exit");
+
 
 					command = Console.ReadLine();
 
@@ -40,9 +41,6 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 							break;
 						case "remove book":
 							RemoveBook();
-							break;
-						case "update book":
-							UpdateBook();
 							break;
 						case "list books":
 							ListBooks();
@@ -56,18 +54,21 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 						case "search by":
 							SearchBy();
 							break;
-						case "edit":
+						case "edit book":
 							Edit();
 							break;
 						case "reviews":
 							Reviews();
 							break;
+						case "exit":
+							Console.WriteLine("Exiting application");
+							return; 
 						default:
 							Console.WriteLine("Unknown command.");
 							break;
 					}
 
-				} while (!string.IsNullOrWhiteSpace(command));
+				} while (true);
 			}
 
 		}
@@ -145,32 +146,13 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			}
 		}
 
-		// Update a book's details. The user will be prompted to enter the ID of the book and the new title.
-
-		static void UpdateBook()
-		{
-			Console.Write("Enter book ID: ");
-			if (int.TryParse(Console.ReadLine(), out int id))
-			{
-				var book = bookService.SearchBook(id);
-				if (book != null)
-				{
-					Console.Write("Enter new book title: ");
-					book.Title = Console.ReadLine() ?? "";
-					bookService.UpdateBook(book);
-				}
-			}
-
-			
-		}
-
 		// List all the books in the collection.
 
 		static void ListBooks()
 		{
 			foreach (var book in bookService)
 			{
-				Console.WriteLine($"ID: {book.Id}, Title: {book.Title}");
+				Console.WriteLine($"ID: {book.Id}, Title: {book.Title}, Genre: {book.Genre}");
 			}
 		}
 
@@ -257,19 +239,63 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 			if (book != null)
 			{
 				Console.WriteLine("What would you like to edit?");
-				Console.WriteLine("1 - Title");
-				Console.WriteLine("2 - Description");
-				Console.WriteLine("3 - Genre");
-				Console.WriteLine("4 - Author");
+				Console.WriteLine("\tTitle");
+				Console.WriteLine("\tDescription");
+				Console.WriteLine("\tGenre");
+				Console.WriteLine("\tAuthor");
 
-				int choice = int.Parse(Console.ReadLine() ?? "0");
+				string choice = Console.ReadLine();
 				switch (choice)
 				{
-					case 4:
+					case "Title":
+						Console.WriteLine("new Title: ");
+						string? title = Console.ReadLine();
+						if(title != null)
+						{
+							book.Title = title;
+						}
+						else
+						{
+							Console.WriteLine("wrong Title!!!");
+
+						}
+						break;
+					case "Description":
+						Console.WriteLine("new Description: ");
+						string? description = Console.ReadLine();
+						if (description != null)
+						{
+							book.Description = description;
+						}
+						else
+						{
+							Console.WriteLine("wrong description!!!");
+
+						}
+						break;
+					case "Genre":
+						Console.WriteLine("new Genre: ");
+						string? genre = Console.ReadLine();
+						if (genre != null && bookService.AllowedGenres(genre))
+						{
+							book.Genre = genre;
+						}
+						else
+						{
+							Console.WriteLine("wrong Genre!!!");
+
+						}
+						break;
+					case "Author":
 						Author? author = configureAuthor();
 						if (author != null)
 						{
 							book.Author = author;
+						}
+						else
+						{
+							Console.WriteLine("wrong Author!!!");
+
 						}
 						break;
 					default:
@@ -384,7 +410,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 
 				Console.Write("See reviews[1] or add a review[2] ?: ");
 
-				if (!int.TryParse(Console.ReadLine(), out int option) || option != 1 || option != 2)
+				if (!int.TryParse(Console.ReadLine(), out int option) && (option != 1 || option != 2))
 				{
 					Console.WriteLine("Invalid input. Please enter a number.");
 					return;
