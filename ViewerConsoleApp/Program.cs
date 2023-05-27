@@ -244,7 +244,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 				Console.WriteLine("\tGenre");
 				Console.WriteLine("\tAuthor");
 
-				string choice = Console.ReadLine();
+				string choice = Console.ReadLine() ?? "";
 				switch (choice)
 				{
 					case "Title":

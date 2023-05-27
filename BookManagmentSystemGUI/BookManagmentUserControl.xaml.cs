@@ -23,7 +23,7 @@ namespace BookManagmentSystemGUI
 	/// </summary>
 	public partial class BookManagmentUserControl : UserControl
 	{
-		public BookService? bookService { get; set; }
+		public BookService? BookService { get; set; }
 		public BookManagmentUserControl()
 		{
 			InitializeComponent();
@@ -41,10 +41,10 @@ namespace BookManagmentSystemGUI
 
 		private void Apply_Button_Click(object sender, RoutedEventArgs e)
 		{
-			if (bookService != null)
+			if (BookService != null)
 			{
 				BookListBox.Items.Clear();
-				var filteredData = bookService.GetBooks();
+				var filteredData = BookService.GetBooks();
 				string genre = GenreComboBox.Text;
 				if (!string.IsNullOrEmpty(genre))
 				{
@@ -77,14 +77,14 @@ namespace BookManagmentSystemGUI
 
 		private void Add_Button_Click(object sender, RoutedEventArgs e)
 		{
-			int prevCount = bookService == null ? 0 : bookService.BookCount;
-			if (bookService != null)
+			int prevCount = BookService == null ? 0 : BookService.BookCount;
+			if (BookService != null)
 			{
-				var addBookWindow = new AddBookWindow(bookService);
+				var addBookWindow = new AddBookWindow(BookService);
 				addBookWindow.ShowDialog();
-				if (bookService.BookCount > prevCount)
+				if (BookService.BookCount > prevCount)
 				{
-					BookListBox.Items.Add(bookService.GetBooks().Last().Title);
+					BookListBox.Items.Add(BookService.GetBooks().Last().Title);
 				}
 			}
 		}
@@ -108,31 +108,34 @@ namespace BookManagmentSystemGUI
 
 		private void Remove_Button_Click(object sender, RoutedEventArgs e)
 		{
-			Book? bookToRemove = SelectedBook();
-
-			if (bookToRemove != null)
+			if (BookService != null)
 			{
-				MessageBoxResult result = MessageBox.Show($"Are you sure you want to remove the book '{bookToRemove.Title}'?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+				Book? bookToRemove = SelectedBook();
 
-				if (result == MessageBoxResult.Yes)
+				if (bookToRemove != null)
 				{
-					bookService.RemoveBook(bookToRemove);
-					BookListBox.Items.Remove(bookToRemove.Title);
-					MessageBox.Show("Book removed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-				}
-				else
-				{
-					MessageBox.Show("Book removal canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
+					MessageBoxResult result = MessageBox.Show($"Are you sure you want to remove the book '{bookToRemove.Title}'?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+					if (result == MessageBoxResult.Yes)
+					{
+						BookService.RemoveBook(bookToRemove);
+						BookListBox.Items.Remove(bookToRemove.Title);
+						MessageBox.Show("Book removed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+					}
+					else
+					{
+						MessageBox.Show("Book removal canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
+					}
 				}
 			}
 		}
 
 		private Book? SelectedBook()
 		{
-			if (bookService != null && BookListBox.SelectedItem != null)
+			if (BookService != null && BookListBox.SelectedItem != null)
 			{
-				string selectedBookTitle = BookListBox.SelectedItem.ToString();
-				return bookService.GetBooks().FirstOrDefault(b => b.Title.Equals(selectedBookTitle));
+				string? selectedBookTitle = BookListBox.SelectedItem.ToString() ?? "";
+				return BookService.GetBooks().FirstOrDefault(b => b.Title.Equals(selectedBookTitle));
 			}
 			return null;
 		}

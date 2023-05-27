@@ -20,7 +20,7 @@ namespace BookManagmentSystemGUI
 	/// </summary>
 	public partial class ReviewsWindow : Window
 	{
-		private IList<Review> _reviews;
+		private readonly IList<Review> _reviews;
 
 		public ReviewsWindow(IList<Review> reviews)
 		{

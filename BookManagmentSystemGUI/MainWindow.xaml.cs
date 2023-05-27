@@ -23,29 +23,29 @@ namespace BookManagmentSystemGUI
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		BookService bookService;
+		private readonly BookService _bookService;
 		public MainWindow()
 		{
 			InitializeComponent();
-			bookService = new BookService();
-			bookManagment.bookService = bookService;
+			_bookService = new BookService();
+			bookManagment.BookService = _bookService;
 		}
 
 		private void New_Click(object sender, RoutedEventArgs e)
 		{
-			if (bookService.BookCount > 0)
+			if (_bookService.BookCount > 0)
 			{
 				MessageBoxResult result = MessageBox.Show("Reset library ?", "Confirm", MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.Yes)
 				{
-					bookService.Clear();
+					_bookService.Clear();
 				}
 			}
 
 		}
 		private void Open_Click(object sender, RoutedEventArgs e)
 		{
-			OpenFileDialog openFileDialog = new OpenFileDialog();
+			OpenFileDialog openFileDialog = new();
 			if (openFileDialog.ShowDialog() == true)
 			{
 				FileInfo csvFile = new(openFileDialog.FileName);
@@ -55,9 +55,9 @@ namespace BookManagmentSystemGUI
 				}
 				else
 				{
-					bookService.Load(csvFile);
-					bookManagment.bookService = bookService;
-					foreach(Book book in bookService)
+					_bookService.Load(csvFile);
+					bookManagment.BookService = _bookService;
+					foreach(Book book in _bookService)
 					{
 						bookManagment.BookListBox.Items.Add(book.Title);
 					}
@@ -68,14 +68,14 @@ namespace BookManagmentSystemGUI
 
 		private void Save_As_Click(object sender, RoutedEventArgs e)
 		{
-			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			SaveFileDialog saveFileDialog = new();
 			if (saveFileDialog.ShowDialog() == true)
 			{
 				try
 				{
 					FileInfo csvFile = new(saveFileDialog.FileName);
 
-					bookService.Save(csvFile);
+					_bookService.Save(csvFile);
 				}
 				catch (Exception ex)
 				{

@@ -22,10 +22,10 @@ namespace BookManagmentSystemGUI
     /// </summary>
     public partial class AddBookWindow : Window
     {
-        private BookService _bookService;
+        private readonly BookService _bookService;
 		private Author? _author;
-		private string currentId;
-		private bool changingText = false;
+		private string _currentId;
+		private bool _changingText = false;
 
 		public AddBookWindow(BookService bookService)
         {
@@ -37,7 +37,7 @@ namespace BookManagmentSystemGUI
 				++newId;
 			}
 			IdTextBox.Text = newId.ToString();
-			currentId = newId.ToString();
+			_currentId = newId.ToString();
 			_author = null;
 
 		}
@@ -69,7 +69,7 @@ namespace BookManagmentSystemGUI
 				return;
 			}
 
-			if (!(GenreComboBox.SelectedItem is ComboBoxItem genreItem) || string.IsNullOrWhiteSpace(genreItem.Content.ToString()))
+			if (GenreComboBox.SelectedItem is not ComboBoxItem genreItem || string.IsNullOrWhiteSpace(genreItem.Content.ToString()))
 			{
 				MessageBox.Show("Please select a valid genre.");
 				return;
@@ -86,7 +86,7 @@ namespace BookManagmentSystemGUI
 
 			try
 			{
-				_bookService.AddBook(bookId, description, genre, title, _author, _author?.Id);
+				_bookService.AddBook(bookId, description, genre, title, _author, _author.Id);
 				MessageBox.Show("Book added successfully!");
 				this.Close();
 			}
@@ -104,24 +104,24 @@ namespace BookManagmentSystemGUI
 
 		private void IdTextBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (changingText)
+			if (_changingText)
 				return;
 
 			if (string.IsNullOrEmpty(IdTextBox.Text))
 			{
-				currentId = IdTextBox.Text;
+				_currentId = IdTextBox.Text;
 			}
 			else
 			{
 				if (!int.TryParse(IdTextBox.Text, out int id) || _bookService.Any(b => b.Id == id))
 				{
-					changingText = true;
-					IdTextBox.Text = currentId;
-					changingText = false;
+					_changingText = true;
+					IdTextBox.Text = _currentId;
+					_changingText = false;
 				}
 				else
 				{
-					currentId = IdTextBox.Text;
+					_currentId = IdTextBox.Text;
 				}
 			}
 		}

@@ -13,9 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-using BookManagementSystemLibrary;
-using System.Windows;
-
 namespace BookManagmentSystemGUI
 {
 	/// <summary>
@@ -23,21 +20,21 @@ namespace BookManagmentSystemGUI
 	/// </summary>
 	public partial class EditBookWindow : Window
 	{
-		private Book bookToEdit;
+		private readonly Book _bookToEdit;
 
 		public EditBookWindow(ref Book book)
 		{
 			InitializeComponent();
-			bookToEdit = book;
+			_bookToEdit = book;
 
-			TitleTextBox.Text = bookToEdit.Title;
-			DescriptionTextBox.Text = bookToEdit.Description;
+			TitleTextBox.Text = _bookToEdit.Title;
+			DescriptionTextBox.Text = _bookToEdit.Description;
 		}
 
 		private void Update_Button_Click(object sender, RoutedEventArgs e)
 		{
-            bookToEdit.Title = TitleTextBox.Text;
-			bookToEdit.Description = DescriptionTextBox.Text;
+            _bookToEdit.Title = TitleTextBox.Text;
+			_bookToEdit.Description = DescriptionTextBox.Text;
 
 			Close();
 		}

@@ -20,7 +20,7 @@ namespace BookManagementSystemLibrary.Tests
 			_bookService.AddBook(book);
 
 			
-			Assert.AreEqual(1, _bookService.BookCount);
+			Assert.That(_bookService.BookCount, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -35,7 +35,7 @@ namespace BookManagementSystemLibrary.Tests
 			_bookService.AddBook(book1);
 
 			var exception = Assert.Throws<ArgumentException>(() => _bookService.AddBook(book2));
-			Assert.AreEqual("book with given Id already exists", exception.Message);
+			Assert.That(exception.Message, Is.EqualTo("book with given Id already exists"));
 
 		}
 
@@ -50,7 +50,7 @@ namespace BookManagementSystemLibrary.Tests
 			_bookService.AddBook(book1);
 			_bookService.AddBook(book2);
 
-			Assert.AreEqual(2, _bookService.BookCount);
+			Assert.That(_bookService.BookCount, Is.EqualTo(2));
 		}
 		[Test]
 		public void AddReview_ShouldntAddDuplicateReport()
@@ -78,7 +78,7 @@ namespace BookManagementSystemLibrary.Tests
 			_bookService.AddBook(book1);
 			_bookService.AddReview(review, book1.Id);
 
-			Assert.AreEqual(1, _bookService.ReviewCount(book1.Id));
+			Assert.That(_bookService.ReviewCount(book1.Id), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -106,7 +106,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			string[] result = _bookService[author1];
 
-			Assert.AreEqual(2, result.Length);
+			Assert.That(result.Length, Is.EqualTo(2));
 			CollectionAssert.Contains(result, book1.Title);
 			CollectionAssert.Contains(result, book3.Title);
 		}
@@ -127,7 +127,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			var result = _bookService.SearchByGenre("Fiction");
 
-			Assert.AreEqual(2, result.Count());
+			Assert.That(result.Count(), Is.EqualTo(2));
 			CollectionAssert.Contains(result, book1);
 			CollectionAssert.Contains(result, book3);
 		}
@@ -156,7 +156,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			var result = _bookService.SearchByRating("4");
 
-			Assert.AreEqual(2, result.Count());
+			Assert.That(result.Count(), Is.EqualTo(2));
 			CollectionAssert.Contains(result, book1);
 			CollectionAssert.Contains(result, book2);
 		}
@@ -179,7 +179,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			var result = _bookService.GetAuthors();
 
-			Assert.AreEqual(3, result.Count());
+			Assert.That(result.Count(), Is.EqualTo(3));
 			CollectionAssert.Contains(result, author1);
 			CollectionAssert.Contains(result, author2);
 			CollectionAssert.Contains(result, author3);
@@ -213,7 +213,7 @@ namespace BookManagementSystemLibrary.Tests
 			_bookService.AddBook(book);
 			_bookService.DeleteBook(book.Id);
 
-			Assert.AreEqual(0, _bookService.BookCount);
+			Assert.That(_bookService.BookCount, Is.EqualTo(0));
 			Assert.IsFalse(_bookService.Contains(book.Id));
 		}
 
@@ -228,10 +228,10 @@ namespace BookManagementSystemLibrary.Tests
 			_bookService.UpdateBook(updatedBook);
 
 			Book retrievedBook = _bookService.SearchBook(book.Id);
-			Assert.AreEqual(updatedBook.Title, retrievedBook.Title);
-			Assert.AreEqual(updatedBook.Genre, retrievedBook.Genre);
-			Assert.AreEqual(updatedBook.Description, retrievedBook.Description);
-			Assert.AreEqual(updatedBook.Author, retrievedBook.Author);
+			Assert.That(retrievedBook.Title, Is.EqualTo(updatedBook.Title));
+			Assert.That(retrievedBook.Genre, Is.EqualTo(updatedBook.Genre));
+			Assert.That(retrievedBook.Description, Is.EqualTo(updatedBook.Description));
+			Assert.That(retrievedBook.Author, Is.EqualTo(updatedBook.Author));
 		}
 
 		[Test]
@@ -259,7 +259,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			var result = _bookService.GetBooksByAuthorID(author1.Id);
 
-			Assert.AreEqual(2, result.Count());
+			Assert.That(result.Count(), Is.EqualTo(2));
 			CollectionAssert.Contains(result, book1);
 			CollectionAssert.Contains(result, book3);
 		}
@@ -280,7 +280,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			var result = _bookService.GetBooksByGenre("Fiction");
 
-			Assert.AreEqual(2, result.Count());
+			Assert.That(result.Count(), Is.EqualTo(2));
 			CollectionAssert.Contains(result, book1);
 			CollectionAssert.Contains(result, book3);
 		}
@@ -288,6 +288,7 @@ namespace BookManagementSystemLibrary.Tests
 		[Test]
 		public void GetBooksByRating_ShouldReturnMatchingBooks()
 		{
+			// Arrange
 			Author author1 = new Author(1, "Author 1");
 			Author author2 = new Author(2, "Author 2");
 
@@ -297,7 +298,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			Review review1 = new Review(1, "Review 1", 4);
 			Review review2 = new Review(2, "Review 2", 5);
-			Review review3 = new Review(3, "Review 3", 3);
+			Review review3 = new Review(3, "Review 3", 4);
 
 			book1.AddReview(review1);
 			book2.AddReview(review2);
@@ -309,9 +310,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			var result = _bookService.GetBooksByRating(4);
 
-			Assert.AreEqual(1, result.Count());
-			CollectionAssert.Contains(result, book1);
-			CollectionAssert.Contains(result, book2);
+			CollectionAssert.AreEquivalent(result.Select(b => b.Title), new[] { book1.Title, book3.Title });
 		}
 
 		[Test]
@@ -338,7 +337,7 @@ namespace BookManagementSystemLibrary.Tests
 
 			var result = _bookService.GetBooksByRatingIn(3, 4);
 
-			Assert.AreEqual(2, result.Count());
+			Assert.That(result.Count(), Is.EqualTo(2));
 			CollectionAssert.Contains(result, book1);
 			CollectionAssert.Contains(result, book3);
 		}
@@ -359,7 +358,7 @@ namespace BookManagementSystemLibrary.Tests
 			var result = _bookService.GetReviewsOrNull(book.Id);
 
 			Assert.IsNotNull(result);
-			Assert.AreEqual(2, result.Count);
+			Assert.That(result.Count, Is.EqualTo(2));
 			CollectionAssert.Contains(result, review1);
 			CollectionAssert.Contains(result, review2);
 		}

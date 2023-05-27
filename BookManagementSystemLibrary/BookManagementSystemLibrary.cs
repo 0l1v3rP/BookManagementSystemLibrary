@@ -191,7 +191,7 @@ namespace BookManagementSystemLibrary
 			SearchByAuthor = query =>
 			{
 				int authorId;
-				bool success = Int32.TryParse(query, out authorId);
+				bool success = int.TryParse(query, out authorId);
 				if (success)
 				{
 					return _books.Where(b => b.Author.Id == authorId);
@@ -204,7 +204,7 @@ namespace BookManagementSystemLibrary
 			SearchByRating = query =>
 			{
 				int rating;
-				bool success = Int32.TryParse(query, out rating);
+				bool success = int.TryParse(query, out rating);
 				if (success)
 				{
 					return _books.Where(b => b.Reviews.Average(r => r.Rating) >= rating);
@@ -614,19 +614,11 @@ namespace BookManagementSystemLibrary
 		/// <returns></returns>
 		public bool AllowedGenres(string genre)
 		{
-			switch (genre)
+			return genre switch
 			{
-				case "Fiction":
-				case "Mystery":
-				case "Sci-Fi":
-				case "Romance":
-				case "Thriller":
-				case "Fantasy":
-				case "History":
-					return true;
-				default:
-					return false;
-			}
+				"Fiction" or "Mystery" or "Sci-Fi" or "Romance" or "Thriller" or "Fantasy" or "History" => true,
+				_ => false,
+			};
 		}
 		/// <summary>
 		/// removes book from a list of books
