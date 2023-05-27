@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookManagmentSystemGUI"
         mc:Ignorable="d"
-        Title="EditBookWindow" Height="200" Width="400">
+        Title="EditBookWindow" Height="225" Width="420">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,7 +20,7 @@
         <TextBlock Text="Description:" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Center" Grid.Row="1"/>
         <TextBox x:Name="DescriptionTextBox" Grid.Row="1" Grid.Column="1" Margin="10" Width="200" Height="100" TextWrapping="Wrap"/>
 
-        <Button Content="Update" HorizontalAlignment="Left" Margin="260,0,0,0" VerticalAlignment="Center" Grid.Row="2" Click="Update_Button_Click" Width="140"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Grid.Row="2" Click="Cancel_Button_Click" Width="140"/>
+        <Button Content="Update" HorizontalAlignment="Left" Margin="260,0,0,10" VerticalAlignment="Center" Grid.Row="2" Click="Update_Button_Click" Width="140"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="10,0,10,10" VerticalAlignment="Center" Grid.Row="2" Click="Cancel_Button_Click" Width="140"/>
     </Grid>
 </Window>

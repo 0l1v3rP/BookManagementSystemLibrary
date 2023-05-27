@@ -8,10 +8,10 @@
         Title="About" Height="163" Width="300">
     <Grid>
         <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
-            <TextBlock Text="Namedays" FontWeight="Bold" FontSize="16" />
+            <TextBlock Text="BookManagmentSystem" FontWeight="Bold" FontSize="16" />
             <TextBlock Text="Version: 1.0" />
             <TextBlock Text="Copyright © 2023 Oliver Paterek" />
-            <TextBlock Text="This is an app for editing for viewing and editing books." TextWrapping="Wrap" />
+            <TextBlock Text="This is an app for viewing and editing books." TextWrapping="Wrap" />
             <Button Click="Button_Click" Height="23" Width="83" HorizontalAlignment="Right" Margin="10" >OK</Button>
         </StackPanel>
     </Grid>

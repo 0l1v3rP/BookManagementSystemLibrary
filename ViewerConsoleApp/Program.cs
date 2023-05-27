@@ -29,7 +29,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 					Console.WriteLine("\tsearch by");
 					Console.WriteLine("\tedit");
 					Console.WriteLine("\treviews");
-					Console.WriteLine("press Enter to exit");
+					Console.WriteLine("exit");
 
 
 					command = Console.ReadLine();
@@ -54,7 +54,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 						case "search by":
 							SearchBy();
 							break;
-						case "edit book":
+						case "edit":
 							Edit();
 							break;
 						case "reviews":
@@ -84,6 +84,28 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 					Console.WriteLine("Invalid input. Please enter a valid number for the book ID.");
 					return;
 				}
+				if (bookService.Contains(id))
+				{
+					Console.WriteLine("This book ID is already in use. Please enter a unique ID.");
+					return;
+				}
+				Console.Write("Enter book title: ");
+				string? title = Console.ReadLine();
+				if (string.IsNullOrWhiteSpace(title))
+				{
+					Console.WriteLine("Invalid input. Please enter a valid title for the book.");
+					return;
+				}
+
+				Console.Write("Enter book genre: ");
+
+				string? genre = Console.ReadLine();
+				if (string.IsNullOrWhiteSpace(genre))
+				{
+					Console.WriteLine("Invalid input. Please enter a valid genre for the book.");
+					return;
+				}
+
 
 				Console.Write("Enter book description: ");
 				string? description = Console.ReadLine();
@@ -93,21 +115,6 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 					return;
 				}
 
-				Console.Write("Enter book genre: ");
-				string? genre = Console.ReadLine();
-				if (string.IsNullOrWhiteSpace(genre))
-				{
-					Console.WriteLine("Invalid input. Please enter a valid genre for the book.");
-					return;
-				}
-
-				Console.Write("Enter book title: ");
-				string? title = Console.ReadLine();
-				if (string.IsNullOrWhiteSpace(title))
-				{
-					Console.WriteLine("Invalid input. Please enter a valid title for the book.");
-					return;
-				}
 
 				Author? author = configureAuthor();
 				if (author == null)
@@ -116,11 +123,7 @@ namespace BookManagementSystemLibrary.ViewerConsoleApp
 					return;
 				}
 
-				if (bookService.Contains(id))
-				{
-					Console.WriteLine("This book ID is already in use. Please enter a unique ID.");
-					return;
-				}
+				
 
 				bookService.AddBook(id, description, genre, title, author, null);
 				Console.WriteLine($"Book '{title}' added successfully.");

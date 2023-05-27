@@ -36,6 +36,13 @@ namespace BookManagmentSystemGUI
 			GenreComboBox.SelectedIndex = -1;
 			FromTextBox.Clear();
 			ToTextBox.Clear();
+			if (BookService != null)
+			{
+				foreach (var book in BookService)
+				{
+					BookListBox.Items.Add(book.Title);
+				}
+			}
 
 		}
 
@@ -62,7 +69,6 @@ namespace BookManagmentSystemGUI
 				{
 					filteredData = filteredData.Where(b => Regex.IsMatch(b.Title, regex, RegexOptions.IgnoreCase));
 				}
-
 				if (int.TryParse(FromTextBox.Text, out int low) && int.TryParse(ToTextBox.Text, out int high))
 				{
 					filteredData = filteredData.Where(b => b.Reviews.Any() && b.Reviews.Average(r => r.Rating) >= low && b.Reviews.Average(r => r.Rating) <= high);

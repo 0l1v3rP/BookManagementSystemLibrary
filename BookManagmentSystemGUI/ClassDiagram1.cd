@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BookManagmentSystemGUI.AddAuthorWindow">
+    <Position X="11.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAQAAAAAAAAAAAAAAAAACAAAAAgAAAACAAAAAAAA=</HashCode>
+      <FileName>AddAuthorWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BookManagmentSystemGUI.AboutWindow">
+    <Position X="2.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AboutWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.502" Collapsed="true" />
+  </Class>
+  <Class Name="BookManagmentSystemGUI.AddBookWindow">
+    <Position X="9" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAABBAAAIEAAAAAAAQAAAAAAAAECAAAAAAAAAAAA=</HashCode>
+      <FileName>AddBookWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BookManagmentSystemGUI.AddReviewWindow">
+    <Position X="8.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAgAAAAAAAAAAQEAAAAAAAAAAAA=</HashCode>
+      <FileName>AddReviewWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BookManagmentSystemGUI.BookManagmentUserControl">
+    <Position X="6.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAEAAAAQCACAAAAACAQAQ=</HashCode>
+      <FileName>BookManagmentUserControl.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BookManagmentSystemGUI.EditBookWindow">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAABABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EditBookWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BookManagmentSystemGUI.MainWindow">
+    <Position X="3" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBAAAAAAAAAAAAAAAAAAAgAQAAAAQAAAAAAAAAAIAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BookManagmentSystemGUI.ReviewsWindow">
+    <Position X="6.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAgAAAAAAAAAAQAAEAAAAAAAAAA=</HashCode>
+      <FileName>ReviewsWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.625" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
